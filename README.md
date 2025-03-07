@@ -9,6 +9,9 @@ Details and configuration for RaspAP Travel Router build.
 ## Wi-Fi Supported Chipsets
 * https://github.com/morrownr/USB-WiFi/tree/main
 
+Purchased a FENVi AX1800 Wi-Fi 6 USB3 adapter.
+
+
 ## Hardware
 
 * [Case/POE/NVME](https://52pi.com/products/52pi-aluminum-case-for-raspberry-pi-5-with-official-active-cooler-p33-m-2-nvme-m-key-poe-hat?variant=45639566852248) - 52Pi Aluminum Case for Raspberry Pi 5, With Official Active Cooler + P33 M.2 NVMe M-Key PoE+ HAT
