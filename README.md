@@ -44,6 +44,15 @@ Details and configuration for LinuxTek TravelRouter build.
 * Option to use USB-A to RJ45 for external WAN connection.
 * To use NVME boot device, must first set boot order and enable PCIe. See [Jeff Geerling's Article](https://www.jeffgeerling.com/blog/2023/nvme-ssd-boot-raspberry-pi-5)
 
+
+
+
+
+## Usage
+
+1.  Clone this repository: `git clone https://github.com/linuxtek-canada/linuxtek-travelrouter.git`
+2.  Initialize the rpi-image-gen submodule: `git submodule update --init --recursive`
+
 ## References
 * [2025 Build Custom Raspberry Pi Images with rpi-image-gen: Step-By-Step Guide](https://www.youtube.com/watch?v=kxl_swm93XE)
     - [GitHub - rpi-imagegen-example](https://github.com/jonnymacs/rpi-image-gen-example)
