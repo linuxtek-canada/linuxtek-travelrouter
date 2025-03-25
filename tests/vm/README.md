@@ -15,9 +15,12 @@ sudo apt-get -y install \
     qemu-kvm \
     libvirt-daemon-system \
     libvirt-clients \
+    cloud-init \
     bridge-utils \
     virt-manager \
-    qemu-system-arm \    
+    qemu-system-arm \
+    qemu-efi-aarch64 \
+    ovmf \ 
     cloud-utils \
     binfmt-support \
     qemu-user-static
@@ -43,6 +46,8 @@ Note: if you need to reload for current session, run `exec su -l $USER` to ensur
 
 `wget https://cloud.debian.org/images/cloud/bookworm/latest/debian-12-generic-arm64.qcow2`
 
+Copy images to /var/lib/libvirt/images
+
 3. Create cloud-init configuration:
 
 a. Uses cloud-init/user-data file configuration - add SSH keys
@@ -51,24 +56,41 @@ c. Generate cloud-init ISO:
 
 `genisoimage -output cloud-init.iso -volid cidata -joliet -rock cloud-init/user-data cloud-init/meta-data`
 
+Note:  The hashed SHA-512 default password is "debian", created via `mkpasswd --method=SHA-512 --rounds=4096`.
+
+4.  Clone the qcow2 VM disk to use, then resize:
+
+```
+qemu-img convert -O qcow2 debian-12-generic-arm64.qcow2 debian12-vm.qcow2
+qemu-img resize debian12-vm.qcow2 32G
+```
 
 4. Run Emulated ARM64/AARCH64 VM that boots the cloud-init.iso for configuration
 
 ```
 virt-install \
+  --debug \
   --name debian12-arm64 \
+  --os-variant debian12 \
   --arch aarch64 \
   --machine virt \
   --cpu cortex-a76 \
   --memory 16384 \
   --vcpus 4 \
-  --disk size=10,path=/var/lib/libvirt/images/debian12-arm64.qcow2,format=qcow2 \
-  --cdrom ./cloud-init.iso \
+  --disk path=/var/lib/libvirt/images/debian-12-generic-arm64.qcow2,size=32,format=qcow2,bus=virtio \
+  --cdrom /var/lib/libvirt/images/cloud-init.iso \
   --network bridge=virbr0,model=virtio \
-  --os-variant debian12 \
   --graphics none \
-  --console pty,target_type=serial \
-  --boot menu=on
+  --console pty,target_type=serial
+  ```
+
+5.  Helpful commands:
+
 ```
+virsh list --all
+virsh domifaddr debian12-arm64
+```
+- Created buildvm.sh and deletevm.sh to automate quick build/delete
+- Testing cloud-init
 
 ## 

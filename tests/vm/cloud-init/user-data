@@ -1,3 +1,5 @@
+#cloud-config
+
 # cloud-init/user-data
 # Set the default user and SSH key
 # NOTE: Replace <YOUR_SSH_PUBLIC_KEY> with your actual public key
@@ -6,7 +8,14 @@
 #cloud-config
 users:
   - name: debian
-    sudo: ALL=(ALL) NOPASSWD:ALL
+    sudo: ['ALL=(ALL) NOPASSWD:ALL']
     shell: /bin/bash
-    ssh_authorized_keys:
+    passwd: "$6$rounds=4096$MCEqDm9nbk9Mk5Zl$pIA0130Pwhbhx2NmYJJ30TRi5o/weADIEAytk.2NsS454klh.Uy4Voa9XO8.9W1MA0uX3FrfPaQCbnfhQpCFd0"
+    lock_passwd: false
+    ssh-authorized-keys:
       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQC2C58RCfGNJPy5/VAamR/uMtfINDngCv/AmGpGctvHduQAuOHOdRJSNHKi9Ets6krWW4ZJ0qsWOr7VLY2+UcyWEOUEUEUDNbiytHDclvaZhNSxLQ4CNuTKGrRkGdkY697LWgr0GdgfmojjHbWkODvBs9fQzDFJcdQIgoHQwP5bYbjGlyfB29tUEgoEgrWkuEsdpLYIV867IJJi7bqZSfOLPY+0VbiZl7oiRYjHOXUPEJbzD6JJS9okdjUO/hTvWZuenWsTjDd4ULlM/HhcctUYieNeAYm6uNJvFJvgPTBXiIBAiJhAxsmFvmCmFk2MetIHfMjMEmfm2kQ6764ktWcoxMUO0wITp57FryMOZZxlyRzh6sYC++Vlf1Qj/d+Lb18lK40xrmDjigApF3vn5obWf3QSQDP4PbPS1Ao4k3Fo+TpvgBG/68oue4ddnNvQfSQKWG+PUBZ6onzUXAZrUKgs65cO0QHvj1YC8I6MuNdq6onEkTuHvNkHnV9cUK5jeMtZ61cdJwGoP24TVn5QbYq5ORyQDAGZJ+BAIcEU1lCLFSsRqaYjASsf3nkLb1rYUCRQ9Is9epSsYFN1vRjPxSDMAMtmjKcoTQOA8cCBKG1X8rMkecTjoiRS//Mr0OE9xV7jA+CDhRYfVbNERSJjrnjJILnFYY6auYMRSZf6qIMVZQ== keitarou@FIGHTER
+
+chpasswd:
+  expire: False
+
+ssh_pwauth: True
