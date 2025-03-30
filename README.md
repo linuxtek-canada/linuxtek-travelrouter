@@ -21,7 +21,6 @@ Details and configuration for LinuxTek TravelRouter build.
 
 * RaspAP - Debian based wireless router software - [Website](https://raspap.com/)
 * Jellyfin - Free Software Media System - [Website](https://jellyfin.org/)
-* PLEX - Web Media Playback 
 * EmulationStation - Retro Video Game Emulation - [Website](https://emulationstation.org/)
 * Apache Guacamole - Web Based Remote Desktop - [Website](https://guacamole.apache.org/)
 * PiHole - Network-wide Ad Blocking - [Website](https://pi-hole.net/)

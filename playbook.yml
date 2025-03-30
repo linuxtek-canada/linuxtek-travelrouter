@@ -1,0 +1,19 @@
+---
+- name: Install Docker, required software, and deploy containers
+  hosts: all
+
+  # vars:
+    # All of the required variables are passed into the Ansible Playbook
+    # through extra_vars in the Terraform module.
+
+  become: true
+  become_user: root
+
+  tasks:
+    - name: Install Docker
+      ansible.builtin.include_tasks:
+        file: "tasks/install_docker.yml"
+
+    - name: Deploy RaspAP
+      ansible.builtin.include_tasks:
+        file: "tasks/deploy_raspap.yml"

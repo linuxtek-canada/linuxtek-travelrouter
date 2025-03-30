@@ -1,0 +1,45 @@
+---
+# Based on: https://docs.docker.com/engine/install/debian/
+# Packages were pre-installed via Packer
+
+- name: Run Shell script to clean out conflict packages and install latest Docker modules
+  ansible.builtin.shell:
+    name: "../install_docker.sh"
+    
+- name: Ensure Docker service is started and set to start on boot
+  ansible.builtin.service:
+    name: docker
+    state: started
+    enabled: true
+
+- name: Ensure the "docker" group exists
+  ansible.builtin.group:
+    name: docker
+    state: present
+
+- name: Ensure the "docker" user exists and is in the "docker" group
+  ansible.builtin.user:
+    name: docker
+    group: docker
+    create_home: true
+    shell: /bin/bash
+
+- name: Add the "docker" user to the "docker" group
+  ansible.builtin.user:
+    name: docker
+    groups: docker
+    append: true
+
+- name: Ensure Docker group has permission to use Docker
+  ansible.builtin.file:
+    path: /var/run/docker.sock
+    state: file
+    owner: root
+    group: docker
+    mode: '0666'
+
+- name: Ensure the "docker" user can run Docker without sudo
+  ansible.builtin.copy:
+    dest: /etc/sudoers.d/docker
+    content: "docker ALL=(ALL) NOPASSWD: /usr/bin/docker"
+    mode: '0440'

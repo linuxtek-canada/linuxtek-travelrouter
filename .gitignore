@@ -1,3 +1,5 @@
 # Ignore all of these file extensions for all directories/subdirectories
 **/*.qcow2
 **/*.iso
+inventory
+ansible.cfg

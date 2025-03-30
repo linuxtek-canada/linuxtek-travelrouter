@@ -1,0 +1,6 @@
+--- 
+
+- name: Deploy RaspAP via Docker Compose
+  ansible.builtin.command:
+    cmd: "docker compose -f ../docker/raspap.yml up -d"    
+  become: true

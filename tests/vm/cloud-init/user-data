@@ -1,21 +1,36 @@
 #cloud-config
 
-# cloud-init/user-data
-# Set the default user and SSH key
-# NOTE: Replace <YOUR_SSH_PUBLIC_KEY> with your actual public key
-# If you want to use a password, remove ssh_authorized_keys and uncomment password/hash
-
-#cloud-config
-users:
-  - name: debian
-    sudo: ['ALL=(ALL) NOPASSWD:ALL']
-    shell: /bin/bash
-    passwd: "$6$rounds=4096$MCEqDm9nbk9Mk5Zl$pIA0130Pwhbhx2NmYJJ30TRi5o/weADIEAytk.2NsS454klh.Uy4Voa9XO8.9W1MA0uX3FrfPaQCbnfhQpCFd0"
+users:  
+  - default
+  - name: sysadmin
+    sudo: ALL=(ALL) NOPASSWD:ALL
+    shell: /bin/bash    
+    passwd: $6$rounds=4096$jAWpGwGi4rgCdKM.$Qcoy7i1cudPQ9y7T.m3PiZ6XNnmiK3As8HTu58LijG5AForiDzT32eDvgoUXc1IlvGiaU7Ms1rWU4nP6jKNkb0 #PW: sysadmin
     lock_passwd: false
     ssh-authorized-keys:
       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQC2C58RCfGNJPy5/VAamR/uMtfINDngCv/AmGpGctvHduQAuOHOdRJSNHKi9Ets6krWW4ZJ0qsWOr7VLY2+UcyWEOUEUEUDNbiytHDclvaZhNSxLQ4CNuTKGrRkGdkY697LWgr0GdgfmojjHbWkODvBs9fQzDFJcdQIgoHQwP5bYbjGlyfB29tUEgoEgrWkuEsdpLYIV867IJJi7bqZSfOLPY+0VbiZl7oiRYjHOXUPEJbzD6JJS9okdjUO/hTvWZuenWsTjDd4ULlM/HhcctUYieNeAYm6uNJvFJvgPTBXiIBAiJhAxsmFvmCmFk2MetIHfMjMEmfm2kQ6764ktWcoxMUO0wITp57FryMOZZxlyRzh6sYC++Vlf1Qj/d+Lb18lK40xrmDjigApF3vn5obWf3QSQDP4PbPS1Ao4k3Fo+TpvgBG/68oue4ddnNvQfSQKWG+PUBZ6onzUXAZrUKgs65cO0QHvj1YC8I6MuNdq6onEkTuHvNkHnV9cUK5jeMtZ61cdJwGoP24TVn5QbYq5ORyQDAGZJ+BAIcEU1lCLFSsRqaYjASsf3nkLb1rYUCRQ9Is9epSsYFN1vRjPxSDMAMtmjKcoTQOA8cCBKG1X8rMkecTjoiRS//Mr0OE9xV7jA+CDhRYfVbNERSJjrnjJILnFYY6auYMRSZf6qIMVZQ== keitarou@FIGHTER
 
-chpasswd:
-  expire: False
+# If this is set, 'root' will not be able to ssh in and they 
+# will get a message to login instead as the above $user (debian)
+disable_root: true
 
-ssh_pwauth: True
+# Disable password auth - force to use authorized key
+ssh_pwauth: false
+
+# Update apt database on first boot (run 'apt-get update')
+package_update: true
+
+# Upgrade the instance on first boot
+package_upgrade: true
+
+# Install the following packages on first boot - update kernel and reboot
+runcmd:  
+  - apt install -y curl git htop python3 vim wget
+  - apt install -y linux-image-6.12.12+bpo-cloud-arm64
+  - reboot
+
+# Reboot after package install/update if necessary
+package_reboot_if_required: true
+
+# Set System Timezone
+timezone: America/Toronto
