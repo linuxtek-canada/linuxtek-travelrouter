@@ -2,10 +2,60 @@
 # Based on: https://docs.docker.com/engine/install/debian/
 # Packages were pre-installed via Packer
 
-- name: Run Shell script to clean out conflict packages and install latest Docker modules
-  ansible.builtin.shell:
-    name: "../install_docker.sh"
-    
+- name: Clean out packages prior to install
+  ansible.builtin.apt:
+    pkg:
+      - docker.io
+      - docker-doc
+      - docker-compose
+      - podman-docker
+      - containerd
+      - runc
+    state: absent
+    autoclean: true
+
+- name: Install prequisites and update/confirm other packages
+  ansible.builtin.apt:
+    pkg:
+      - ca-certificates
+      - cloud-init
+      - curl
+      - git
+      - gpg
+      - htop
+      - lsb-release
+      - openssl
+      - openssh-server
+      - python3
+      - qemu-guest-agent
+    state: present
+    update_cache: true
+
+- name: Add Docker GPG Apt key
+  ansible.builtin.apt_key:
+    url: https://download.docker.com/linux/debian/gpg
+    state: present
+
+- name: Add Docker Repository
+  ansible.builtin.apt_repository:
+    repo: deb https://download.docker.com/linux/debian bookworm stable
+    state: present
+
+- name: Update apt and install Docker packages
+  ansible.builtin.apt:
+    pkg:
+      - docker-ce
+      - docker-ce-cli
+      - containerd.io
+      - docker-buildx-plugin
+      - docker-compose-plugin
+    state: present
+    update_cache: true
+
+- name: Remove dependencies no longer required
+  ansible.builtin.apt:
+    autoclean: true    
+
 - name: Ensure Docker service is started and set to start on boot
   ansible.builtin.service:
     name: docker

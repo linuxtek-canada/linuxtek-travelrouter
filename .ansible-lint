@@ -1,0 +1,9 @@
+# https://ansible.readthedocs.io/projects/lint/rules/
+
+---
+
+skip_list:
+  - no-changed-when
+  - no-handler
+  - no-relative-paths
+  - package-latest
