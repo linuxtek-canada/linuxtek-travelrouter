@@ -1,11 +1,21 @@
 ---
 
+- name: Create the directory to store the RaspAP files on the remote host
+  ansible.builtin.file:
+    path: /opt/docker/raspap
+    state: directory
+    mode: '0755'
+
+- name: Generate templated docker-compose file for RaspAP and sent to remote host
+  ansible.builtin.template:
+    src: "../templates/raspap.j2"
+    dest: /opt/docker/raspap/raspap.yml
+    mode: '0644'
+
 - name: Deploy RaspAP via Docker Compose
   community.docker.docker_compose_v2:
-    project_src: ./docker
-    files:
-      - raspap.yml
+    project_src: /opt/docker/raspap
+    files: raspap.yml
     state: present
-  delegate_to: localhost
   become: true
   become_user: root

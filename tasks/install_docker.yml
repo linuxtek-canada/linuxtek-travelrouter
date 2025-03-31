@@ -54,7 +54,7 @@
 
 - name: Remove dependencies no longer required
   ansible.builtin.apt:
-    autoclean: true    
+    autoclean: true
 
 - name: Ensure Docker service is started and set to start on boot
   ansible.builtin.service:

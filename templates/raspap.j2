@@ -1,10 +1,16 @@
 # Based on: https://docs.raspap.com/docker/
 
-version: "3.8"
 services:
   raspap:
     container_name: raspap
     image: ghcr.io/raspap/raspap-docker:latest
+    environment:
+      - RASPAP_SSID={{ raspap_ssid }}
+      - RASPAP_SSID_PASS={{ raspap_ssid_pass }}
+      - RASPAP_COUNTRY={{ raspap_country }}
+      - RASPAP_WEBGUI_USER={{ raspap_webgui_user }}
+      - RASPAP_WEBGUI_PASS={{ raspap_webgui_pass }}
+      - RASPAP_WEBGUI_PORT={{ raspap_webgui_port }}
     #build: .
     privileged: true
     network_mode: host

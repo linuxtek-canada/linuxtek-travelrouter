@@ -27,7 +27,7 @@ virt-install \
   --cpu cortex-a76 \
   --memory 16384 \
   --vcpus 4 \
-  --disk path=/var/lib/libvirt/images/debian-12-generic-arm64.qcow2,size=32,format=qcow2,bus=virtio \
+  --disk path=/var/lib/libvirt/images/debian-12-generic-arm64.qcow2,size=64,format=qcow2,bus=virtio \
   --cdrom /var/lib/libvirt/images/debian12-cloud-init.iso \
   --network network=default,model=virtio \
   --graphics none \

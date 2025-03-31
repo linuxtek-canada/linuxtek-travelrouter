@@ -2,17 +2,22 @@
 - name: Install Docker, required software, and deploy containers
   hosts: all
 
-  # vars:
-    # All of the required variables are passed into the Ansible Playbook
-    # through extra_vars in the Terraform module.
-
   become: true
   become_user: root
 
+  vars:
+    # Read all of the key value pairs from the .env file in as environment variables
+    env_vars: "{{ dict(lookup('file', '.env') | regex_findall('^([^#][^=]+)=(.*)$', multiline=True)) }}"
+
+  # tasks:
+  #   - name: Dump env_vars
+  #     ansible.builtin.debug:
+  #       var: env_vars
+
   tasks:
-    - name: Install Docker
-      ansible.builtin.include_tasks:
-        file: "tasks/install_docker.yml"
+  #   - name: Install Docker
+  #     ansible.builtin.include_tasks:
+  #       file: "tasks/install_docker.yml"
 
     - name: Deploy RaspAP
       ansible.builtin.include_tasks:
