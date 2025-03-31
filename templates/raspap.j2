@@ -5,15 +5,15 @@ services:
     container_name: raspap
     image: ghcr.io/raspap/raspap-docker:latest
     environment:
-      - RASPAP_SSID={{ raspap_ssid }}
-      - RASPAP_SSID_PASS={{ raspap_ssid_pass }}
-      - RASPAP_COUNTRY={{ raspap_country }}
-      - RASPAP_WEBGUI_USER={{ raspap_webgui_user }}
-      - RASPAP_WEBGUI_PASS={{ raspap_webgui_pass }}
-      - RASPAP_WEBGUI_PORT={{ raspap_webgui_port }}
+      - RASPAP_SSID={{ env_vars.raspap_ssid }}
+      - RASPAP_SSID_PASS={{ env_vars.raspap_ssid_pass }}
+      - RASPAP_COUNTRY={{ env_vars.raspap_country }}
+      - RASPAP_WEBGUI_USER={{ env_vars.raspap_webgui_user }}
+      - RASPAP_WEBGUI_PASS={{ env_vars.raspap_webgui_pass }}
+      - RASPAP_WEBGUI_PORT={{ env_vars.raspap_webgui_port }}
     #build: .
     privileged: true
-    network_mode: host
+    network_mode: host    
     cgroup: host # uncomment when using an ARM device 
     cap_add:
       - SYS_ADMIN

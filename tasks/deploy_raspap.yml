@@ -4,12 +4,16 @@
   ansible.builtin.file:
     path: /opt/docker/raspap
     state: directory
+    owner: docker
+    group: docker
     mode: '0755'
 
 - name: Generate templated docker-compose file for RaspAP and sent to remote host
   ansible.builtin.template:
     src: "../templates/raspap.j2"
     dest: /opt/docker/raspap/raspap.yml
+    owner: docker
+    group: docker
     mode: '0644'
 
 - name: Deploy RaspAP via Docker Compose
