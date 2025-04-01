@@ -4,6 +4,10 @@ services:
   raspap:
     container_name: raspap
     image: ghcr.io/raspap/raspap-docker:latest
+    platform: linux/arm64
+    restart: unless-stopped
+    labels:
+      io.portainer.accesscontrol.public: "true"
     environment:
       - RASPAP_SSID={{ env_vars.raspap_ssid }}
       - RASPAP_SSID_PASS={{ env_vars.raspap_ssid_pass }}
@@ -18,5 +22,4 @@ services:
     cap_add:
       - SYS_ADMIN
     volumes:
-      - /sys/fs/cgroup:/sys/fs/cgroup:rw
-    restart: unless-stopped
+      - /sys/fs/cgroup:/sys/fs/cgroup:rw 

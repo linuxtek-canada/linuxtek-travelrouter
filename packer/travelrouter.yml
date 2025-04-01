@@ -1,0 +1,50 @@
+variable "image_url" {
+  default = "https://downloads.raspberrypi.com/raspios_arm64/images/raspios_arm64-2024-03-15/2024-03-15-raspios-bookworm-arm64.img.xz"
+}
+
+variable "image_checksum" {
+  default = "sha256:PUT_IMAGE_HASH_HERE"
+}
+
+packer {
+  required_plugins {
+    arm-image = {
+      version = ">= 1.0.0"
+      source  = "github.com/solo-io/packer-plugin-arm-image"
+    }
+  }
+}
+
+source "arm-image" "raspi" {
+  iso_url            = var.image_url
+  iso_checksum       = var.image_checksum
+  target_image_size  = "8G"
+  format             = "img"
+  qemu_binary        = "/usr/bin/qemu-system-aarch64"
+  qemu_args          = ["-M", "virt", "-cpu", "cortex-a72", "-smp", "4", "-m", "2048"]
+
+  chroot_mounts = [
+    ["proc", "proc", "/proc"],
+    ["sysfs", "sys", "/sys"],
+    ["bind", "/dev", "/dev"]
+  ]
+
+  boot_command = [
+    "<enter><wait>",
+    "sudo systemctl enable ssh<enter>",
+    "sudo systemctl start ssh<enter>"
+  ]
+}
+
+build {
+  sources = ["source.arm-image.raspi"]
+
+  provisioner "ansible" {
+    playbook_file = "provision.yml"
+  }
+
+  post-processor "compress" {
+    format = "xz"
+    keep_input_artifact = false
+  }
+}

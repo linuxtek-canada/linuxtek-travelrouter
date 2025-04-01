@@ -8,12 +8,25 @@
   vars:
     # Read all of the key value pairs from the .env file in as environment variables
     env_vars: "{{ dict(lookup('file', '.env') | regex_findall('^([^#][^=]+)=(.*)$', multiline=True)) }}"
+    container_names:
+      - raspap
+      - portainer
+      - pihole
+      - jellyfin      
+      - heimdall
 
   tasks:
     - name: Install Docker
       ansible.builtin.include_tasks:
         file: "tasks/install_docker.yml"
 
-    - name: Deploy RaspAP
+    - name: Install other container services in order
       ansible.builtin.include_tasks:
-        file: "tasks/deploy_raspap.yml"
+        file: "tasks/deploy_container.yml"
+      loop: "{{ container_names }}"
+      loop_control:
+        loop_var: deployment_name
+
+    - name: Post Deployment Tasks
+      ansible.builtin.include_tasks:
+        file: "tasks/post_deployment.yml"

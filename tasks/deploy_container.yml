@@ -1,0 +1,25 @@
+---
+
+- name: "Create the directory to store the deployment files on the remote host -  {{ deployment_name }}"
+  ansible.builtin.file:
+    path: "/opt/docker/{{ deployment_name }}"
+    state: directory
+    owner: docker
+    group: docker
+    mode: '0755'
+
+- name: "Generate templated docker-compose file for deployment and sent to remote host - {{ deployment_name }}"
+  ansible.builtin.template:
+    src: "../templates/{{ deployment_name }}.j2"
+    dest: "/opt/docker/{{ deployment_name }}/{{ deployment_name }}.yml"
+    owner: docker
+    group: docker
+    mode: '0644'
+
+- name: "Deploy via Docker Compose - {{ deployment_name }}"
+  community.docker.docker_compose_v2:
+    project_src: "/opt/docker/{{ deployment_name }}"
+    files: "{{ deployment_name }}.yml"
+    state: present
+  become: true
+  become_user: docker

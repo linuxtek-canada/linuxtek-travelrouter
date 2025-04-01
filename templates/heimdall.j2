@@ -1,0 +1,25 @@
+# More info at https://hub.docker.com/r/linuxserver/heimdall and https://github.com/linuxserver/Heimdall
+
+services:
+  heimdall:
+    image: linuxserver/heimdall:arm64v8-latest
+    platform: linux/arm64
+    container_name: heimdall
+    restart: unless-stopped
+    labels:
+      io.portainer.accesscontrol.public: "true"
+    volumes:
+      - {{ env_vars.heimdall_config_dir }}:/config
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ={{ env_vars.heimdall_time_zone }}
+    ports:
+      - {{ env_vars.heimdall_http_port }}:80
+      - {{ env_vars.heimdall_https_port }}:443
+    networks:
+      - heimdall_network
+
+networks:
+  heimdall_network:
+    driver: bridge

@@ -21,13 +21,11 @@ Details and configuration for LinuxTek TravelRouter build.
 
 * RaspAP - Debian based wireless router software - [Website](https://raspap.com/)
 * Jellyfin - Free Software Media System - [Website](https://jellyfin.org/)
-* EmulationStation - Retro Video Game Emulation - [Website](https://emulationstation.org/)
-* Apache Guacamole - Web Based Remote Desktop - [Website](https://guacamole.apache.org/)
 * PiHole - Network-wide Ad Blocking - [Website](https://pi-hole.net/)
 * Portainer - Container Management Software - [Website](https://www.portainer.io/)
 * Heimdall - Application Dashboard - [Website](https://heimdall.site/)
 
-## RaspAP OS
+## RaspAP
 
 * [Website Link](https://raspap.com/)
 * Full-featured wireless router setup for Debian-based devices.
@@ -43,14 +41,21 @@ Details and configuration for LinuxTek TravelRouter build.
 * Option to use USB-A to RJ45 for external WAN connection.
 * To use NVME boot device, must first set boot order and enable PCIe. See [Jeff Geerling's Article](https://www.jeffgeerling.com/blog/2023/nvme-ssd-boot-raspberry-pi-5)
 
+## Packer Build Option
 
+* [Blog Post Example](https://blog.mmalecki.com/2022/11/16/pi-gen-and-packer)
+* [Packer Plugin - ARM Image](https://github.com/solo-io/packer-plugin-arm-image)
 
+## Notes
 
+* Originally looked at RetroPie and EmulationStation but they have not been updated in a long time. Recalbox currently is maintained.
+* Looking to set up Apache Guacamole - Web Based Remote Desktop - [Website](https://guacamole.apache.org/), however there are no official arm64 images.  Will need to test or build own.
 
 ## Usage
 
 1.  Clone this repository: `git clone https://github.com/linuxtek-canada/linuxtek-travelrouter.git`
-2.  Initialize the rpi-image-gen submodule: `git submodule update --init --recursive`
+2.  Create a .env file based on the env-sample file, and enter in all your values.
+3.  Adjust the playbook.yml file and remove values under "container_names" that you don't want to be installed in the image.
 
 ## References
 * [2025 Build Custom Raspberry Pi Images with rpi-image-gen: Step-By-Step Guide](https://www.youtube.com/watch?v=kxl_swm93XE)

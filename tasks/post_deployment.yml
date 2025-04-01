@@ -1,0 +1,9 @@
+---
+
+- name: Copy extra files to home directory for later use
+  ansible.builtin.copy:
+    src: "../files"
+    dest: "/home/sysadmin/files"
+    owner: sysadmin
+    group: sysadmin
+    mode: "0644"
