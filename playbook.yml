@@ -12,7 +12,7 @@
       - raspap
       - portainer
       - pihole
-      - jellyfin      
+      - jellyfin
       - heimdall
 
   tasks:
