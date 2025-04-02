@@ -1,0 +1,32 @@
+# Global  Variables
+server_time_zone=
+# Image Build Variables
+raspios_image_url=https://downloads.raspberrypi.com/raspios_arm64/images/raspios_arm64-2024-11-19/2024-11-19-raspios-bookworm-arm64.img.xz
+raspios_image_checksum=sha256:ea6e68c48d14c3d78af5471c0b288bbf6522fdd775241f74d8295d106d344300
+# RaspAP Variables: https://docs.raspap.com/docker/#environment-variables
+raspap_ssid=
+raspap_ssid_pass=
+raspap_country=
+raspap_webgui_user=
+raspap_webgui_pass=
+raspap_webgui_port=8080
+# Portainer Variables
+portainer_webgui_port=9443
+# Jellyfin Variables
+jellyfin_http_port=8096
+jellyfin_https_port=8920
+jellyfin_config_path=/opt/docker/jellyfin/config
+jellyfin_cache_path=/opt/docker/jellyfin/cache
+jellyfin_media_path=/media
+# PiHole Variables
+pihole_time_zone=
+pihole_dns_port=5353
+pihole_http_port=8888
+pihole_https_port=8443
+pihole_web_password=
+pihole_etc_dir=/opt/docker/pihole/etc-pihole
+# Heimdall Variables
+heimdall_http_port=80
+heimdall_https_port=443
+heimdall_time_zone=America/Toronto
+heimdall_config_dir=/opt/docker/heimdall/config

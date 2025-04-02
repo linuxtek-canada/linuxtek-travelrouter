@@ -2,5 +2,4 @@
 **/*.qcow2
 **/*.iso
 inventory
-ansible.cfg
 .env
