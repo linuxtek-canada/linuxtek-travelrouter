@@ -1,9 +1,31 @@
 ---
 
-- name: Copy extra files to home directory for later use
-  ansible.builtin.copy:
-    src: "../files"
-    dest: "/home/sysadmin/files"
-    owner: sysadmin
-    group: sysadmin
-    mode: "0644"
+# Minor post-deployment changes
+
+- name: Add Brave Browser Repo Key
+  ansible.builtin.apt_key:
+    url: https://brave-browser-apt-release.s3.brave.com/brave-browser-archive-keyring.gpg
+    keyring: /usr/share/keyrings/brave-browser-archive-keyring.gpg
+    state: present
+
+- name: Add Brave Browser Repository
+  ansible.builtin.apt_repository:
+    repo: "deb [signed-by=/usr/share/keyrings/brave-browser-archive-keyring.gpg] https://brave-browser-apt-release.s3.brave.com/ stable main"
+    filename: /etc/apt/sources.list.d/brave-browser-release.list
+    state: present
+
+- name: Install additional packages on main OS
+  ansible.builtin.apt:
+    pkg:
+      - brave-browser
+      - curl
+      - firefox
+      - gimp
+      - htop
+      - imagemagick
+      - lutris
+      - retroarch
+      - unzip
+      - wget
+      - vlc
+    update_cache: true

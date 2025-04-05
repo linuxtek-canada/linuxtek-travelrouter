@@ -1,0 +1,4 @@
+"https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts",0,"Steven Black Blocklist"
+"https://raw.githubusercontent.com/hagezi/dns-blocklists/main/hosts/pro.txt",0,"Hagezi Hosts Blocklist Pro"
+"https://raw.githubusercontent.com/hagezi/dns-blocklists/main/adblock/pro.txt",0,"Hagezi Adblock Pro"
+"https://raw.githubusercontent.com/hagezi/dns-blocklists/main/adblock/pro.mini.txt",0,Hagezi Adblock Pro Mini"

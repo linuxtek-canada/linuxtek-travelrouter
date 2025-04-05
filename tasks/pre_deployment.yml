@@ -14,6 +14,38 @@
     state: absent
     autoclean: true
 
+- name: Perform a full-upgrade to ensure everything is updated
+  ansible.builtin.apt:
+    upgrade: dist
+    update_cache: true
+
+- name: Update Raspberry Pi firmware
+  ansible.builtin.expect:
+    command: rpi-update
+    responses:
+      "Would you like to proceed? (y/N)":
+        - "Y"
+
+- name: Check if reboot is requested by system from kernel/libs updates
+  ansible.builtin.stat:
+    path: /var/lib/reboot-required
+  register: reboot_required
+
+- name: Reboot box if requested by system
+  ansible.builtin.command: |
+    sleep 10 && /sbin/shutdown -r now 'Rebooting box to update system libs/kernel as needed'
+  args:
+    removes: /var/run/reboot-required
+  async: 300
+  poll: 0
+  when: reboot_required.stat.exists
+
+- name: Wait for system to become reachable again to continue
+  ansible.builtin.wait_for_connection:
+    delay: 60
+    timeout: 300
+  when: reboot_required.stat.exists
+
 - name: Install prequisites and update/confirm other packages
   ansible.builtin.apt:
     pkg:
@@ -25,11 +57,14 @@
       - gpg
       - htop
       - lsb-release
+      - ltunify
       - openssl
       - openssh-server
       - python3
       - python3-pip
+      - python3-virtualenv
       - qemu-guest-agent
+      - solaar
       - sudo
     state: present
     update_cache: true
@@ -54,10 +89,6 @@
       - docker-compose-plugin
     state: present
     update_cache: true
-
-- name: Remove dependencies no longer required
-  ansible.builtin.apt:
-    autoclean: true
 
 - name: Ensure Docker service is started and set to start on boot
   ansible.builtin.service:
@@ -96,3 +127,7 @@
     dest: /etc/sudoers.d/docker
     content: "docker ALL=(ALL) NOPASSWD: /usr/bin/docker"
     mode: '0440'
+
+- name: Remove dependencies no longer required
+  ansible.builtin.apt:
+    autoclean: true

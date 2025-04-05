@@ -16,16 +16,21 @@
       - heimdall
 
   tasks:
-    - name: Install Docker
+    - name: Install pre-deployment software
       ansible.builtin.include_tasks:
-        file: "tasks/install_docker.yml"
+        file: "tasks/pre_deployment.yml"
 
     - name: Install other container services in order
       ansible.builtin.include_tasks:
-        file: "tasks/deploy_container.yml"
+        file: "tasks/deploy_containers.yml"
       loop: "{{ container_names }}"
       loop_control:
         loop_var: deployment_name
+
+    - name: Configure Pihole if it was installed
+      ansible.builtin.include_tasks:
+        file: "tasks/configure_pihole.yml"
+      when: "'pihole' in container_names"
 
     - name: Post Deployment Tasks
       ansible.builtin.include_tasks:

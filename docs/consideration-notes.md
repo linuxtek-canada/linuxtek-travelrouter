@@ -29,4 +29,6 @@
   - Will test deployment after initial install with GUI available.
 * Can look at setting up Traefik for handling proper SSL/TLS, however this would be very custom and difficult for others to re-use. 
 
-
+## Helpful References
+* [Github - Awesome SelfHosted](https://github.com/awesome-selfhosted/)
+* [Github - Homer Dashboard- Site Icons](https://github.com/homarr-labs/dashboard-icons)

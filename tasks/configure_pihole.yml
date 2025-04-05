@@ -1,0 +1,26 @@
+---
+# Configure Pihole by using a Python virtual environment
+# to run a script to update the sqlite3 database with adlists
+# and explicit whitelist/blacklist domains
+
+- name: Copy config files to scripts directory on remote
+  ansible.builtin.copy:
+    src: ../configs/pihole/
+    dest: "{{ env_vars.pihole_script_dir }}"
+    owner: docker
+    group: docker
+    mode: '0644'
+
+- name: Create a virtual environment for Python in the scripts directory
+  ansible.builtin.command:
+    cmd: "python3 -m venv {{ env_vars.pihole_script_dir }}/venv"
+    creates: "{{ env_vars.pihole_script_dir }}/venv"
+
+- name: Install required Python packages in the virtual environment
+  ansible.builtin.pip:
+    requirements: "{{ env_vars.pihole_script_dir }}/requirements.txt"
+    virtualenv: "{{ env_vars.pihole_script_dir }}/venv"
+
+- name: Run the Pi-hole gravity update script
+  ansible.builtin.command:
+    cmd: "{{ env_vars.pihole_script_dir }}/venv/bin/python {{ env_vars.pihole_script_dir }}/update_lists.py"
