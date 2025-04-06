@@ -99,12 +99,14 @@
 - name: Ensure the "docker" group exists
   ansible.builtin.group:
     name: docker
+    gid: '{{ env_vars.docker_uid }}'
     state: present
 
 - name: Ensure the "docker" user exists and is in the "docker" group
   ansible.builtin.user:
     name: docker
     group: docker
+    uid: '{{ env_vars.docker_gid }}'
     create_home: true
     shell: /bin/bash
 

@@ -6,13 +6,14 @@ services:
     platform: linux/arm64
     container_name: heimdall
     restart: unless-stopped
+    user: "{{ env_vars.docker_uid }}:{{ env_vars.docker_gid }}"
     labels:
       io.portainer.accesscontrol.public: "true"
     volumes:
       - {{ env_vars.heimdall_config_dir }}:/config
     environment:
-      - PUID=1000
-      - PGID=1000
+      - PGID={{ env_vars.docker_uid }}
+      - PGID={{ env_vars.docker_gid }}
       - TZ={{ env_vars.heimdall_time_zone }}
     ports:
       - {{ env_vars.heimdall_http_port }}:80

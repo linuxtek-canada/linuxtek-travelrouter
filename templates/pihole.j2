@@ -5,7 +5,7 @@ services:
     container_name: pihole
     image: pihole/pihole:latest
     platform: linux/arm64
-    restart: unless-stopped
+    restart: unless-stopped    
     labels:
       io.portainer.accesscontrol.public: "true"
     ports:
@@ -14,7 +14,7 @@ services:
       - "{{ env_vars.pihole_dns_port }}:53/udp"
       # Default HTTP Port
       - "{{ env_vars.pihole_http_port }}:80/tcp"
-      # Default HTTPs Port. FTL will generate a self-signed certificate
+      # Default HTTPS Port. FTL will generate a self-signed certificate
       - "{{ env_vars.pihole_https_port }}:443/tcp"
       # Uncomment the line below if you are using Pi-hole as your DHCP server
       #- "67:67/udp"
@@ -23,11 +23,15 @@ services:
     environment:
       # Set the appropriate timezone for your location (https://en.wikipedia.org/wiki/List_of_tz_database_time_zones), e.g:
       TZ: '{{ env_vars.pihole_time_zone }}'
+      # Set the UID/GID to be the "Docker" user to ensure all files created are owned properly
+      PIHOLE_UID: {{ env_vars.docker_uid }}
+      PIHOLE_GID: {{ env_vars.docker_gid }}      
       # Set a password to access the web interface. Not setting one will result in a random password being assigned
       FTLCONF_webserver_api_password: '{{ env_vars.pihole_web_password }}'
-      # If using Docker's default `bridge` network setting the dns listening mode should be set to 'all'
+      # If using Docker's default `bridge` network setting the dns listening mode should be set to 'all'      
       FTLCONF_dns_listeningMode: 'all'
-      FTLCONF_dns_upstreams: "8.8.8.8;1.1.1.1"
+      FTLCONF_dns_upstreams: '8.8.8.8;1.1.1.1'
+      
     networks:
       - pihole_network
     # Volumes store your data between container upgrades

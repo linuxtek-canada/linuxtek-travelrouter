@@ -10,17 +10,25 @@
     owner: docker
     group: docker
     mode: '0644'
+  become: true
+  become_user: docker
 
 - name: Create a virtual environment for Python in the scripts directory
   ansible.builtin.command:
     cmd: "python3 -m venv {{ env_vars.pihole_script_dir }}/venv"
     creates: "{{ env_vars.pihole_script_dir }}/venv"
+  become: true
+  become_user: docker
 
 - name: Install required Python packages in the virtual environment
   ansible.builtin.pip:
     requirements: "{{ env_vars.pihole_script_dir }}/requirements.txt"
     virtualenv: "{{ env_vars.pihole_script_dir }}/venv"
+  become: true
+  become_user: docker
 
 - name: Run the Pi-hole gravity update script
   ansible.builtin.command:
     cmd: "{{ env_vars.pihole_script_dir }}/venv/bin/python {{ env_vars.pihole_script_dir }}/update_lists.py"
+  become: true
+  become_user: docker

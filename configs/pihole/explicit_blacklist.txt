@@ -1,1 +1,1 @@
-"ads.doubleclick.net",1,"Block Doubleclick"
+"ads.doubleclick.net","Block Doubleclick"

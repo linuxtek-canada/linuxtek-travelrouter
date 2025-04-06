@@ -7,6 +7,8 @@
     owner: docker
     group: docker
     mode: '0755'
+  become: true
+  become_user: docker
 
 - name: "Generate templated docker-compose file for deployment and sent to remote host - {{ deployment_name }}"
   ansible.builtin.template:
@@ -15,6 +17,8 @@
     owner: docker
     group: docker
     mode: '0644'
+  become: true
+  become_user: docker
 
 - name: "Deploy via Docker Compose - {{ deployment_name }}"
   community.docker.docker_compose_v2:

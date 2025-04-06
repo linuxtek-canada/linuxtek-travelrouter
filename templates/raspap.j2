@@ -6,6 +6,7 @@ services:
     image: ghcr.io/raspap/raspap-docker:latest
     platform: linux/arm64
     restart: unless-stopped
+    user: "{{ env_vars.docker_uid }}:{{ env_vars.docker_gid }}"
     labels:
       io.portainer.accesscontrol.public: "true"
     environment:
