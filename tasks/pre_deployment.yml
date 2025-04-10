@@ -19,12 +19,21 @@
     upgrade: dist
     update_cache: true
 
-- name: Update Raspberry Pi firmware
-  ansible.builtin.expect:
-    command: rpi-update
-    responses:
-      "Would you like to proceed? (y/N)":
-        - "Y"
+- name: Install Ansible dependencies
+  ansible.builtin.apt:
+    name:
+      - python3
+      - python3-pip
+      - python3-pexpect
+      - python3-virtualenv
+      - python3-venv
+
+# - name: Update Raspberry Pi firmware
+#   ansible.builtin.expect:
+#     command: rpi-update
+#     responses:
+#       "Would you like to proceed? (y/N)":
+#         - "Y"
 
 - name: Check if reboot is requested by system from kernel/libs updates
   ansible.builtin.stat:
@@ -59,10 +68,7 @@
       - lsb-release
       - ltunify
       - openssl
-      - openssh-server
-      - python3
-      - python3-pip
-      - python3-virtualenv
+      - openssh-server      
       - qemu-guest-agent
       - solaar
       - sudo

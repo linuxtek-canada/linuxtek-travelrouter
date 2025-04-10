@@ -11,7 +11,7 @@ services:
       - "{{ env_vars.portainer_webgui_port }}:9443"  # Secure HTTPS Portainer UI
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-      - /opt/portainer/portainer_data:/data
+      - "{{ env_vars.portainer_data_dir }}:/data"
     networks:
       - portainer_network  # Custom bridge network
 networks:

@@ -25,7 +25,8 @@ package_upgrade: true
 
 # Install the following packages on first boot - update kernel and reboot
 runcmd:  
-  - apt install -y curl git htop python3 vim wget
+  - apt install -y curl git htop vim wget
+  - apt install -y python3 python3-pip python3-pexpect python3-virtualenv python3-venv
   - apt install -y linux-image-6.12.12+bpo-cloud-arm64
   - reboot
 

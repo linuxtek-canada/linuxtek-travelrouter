@@ -32,6 +32,6 @@
         file: "tasks/configure_pihole.yml"
       when: "'pihole' in container_names"
 
-    - name: Post Deployment Tasks
-      ansible.builtin.include_tasks:
-        file: "tasks/post_deployment.yml"
+    # - name: Post Deployment Tasks
+    #   ansible.builtin.include_tasks:
+    #     file: "tasks/post_deployment.yml"
