@@ -71,6 +71,7 @@
       - openssl
       - openssh-server
       - qemu-guest-agent
+      - sqlite3
       - solaar
       - sudo
     state: present

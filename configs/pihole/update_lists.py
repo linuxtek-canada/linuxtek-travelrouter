@@ -21,6 +21,9 @@ def insert_adlist_to_db(domain_file, db_path, domain_type):
     conn = sqlite3.connect(db_path)
     cursor = conn.cursor()
 
+    # Set the type to insert
+    block_type = 0 if domain_type == 'blacklist' else 1
+
     # Read the domains from the file and insert them into the database
     with open(domain_file, mode='r', encoding="utf-8") as file:
         for line in file:
@@ -39,17 +42,22 @@ def insert_adlist_to_db(domain_file, db_path, domain_type):
 
                     # Insert the domain into the appropriate table (domainlist for whitelist)
                     cursor.execute('''
-                    INSERT OR IGNORE INTO adlist (address, enabled, comment)
-                    VALUES (?, ?, ?)
-                    ''', (url,1,comment))
+                    INSERT OR IGNORE INTO adlist (address, enabled, comment, type)
+                    VALUES (?, ?, ?,?)
+                    ''', (url,1,comment,block_type))
 
-    # Commit changes to the database
-    conn.commit()
+                # Commit changes to the database
+                try:
 
-    # Close the connection
-    conn.close()
+                    conn.commit()
+                    print(f"Adlists of type (type {domain_type}) imported successfully into gravity.db!")
 
-    print(f"Domains (type {domain_type}) imported successfully into gravity.db!")
+                except sqlite3.DatabaseError as e:
+                    print(f"Error committing changes to the database: {e}")
+                
+        #  After loop, regardless of results, close the connection
+        conn.close()
+        print(f"Database connection closed.")
 
 # Function to insert blacklists or whitelists into the Pi-hole database
 def insert_explicit_domains_to_db(domain_file, db_path, domain_type):
@@ -90,13 +98,16 @@ def insert_explicit_domains_to_db(domain_file, db_path, domain_type):
                     VALUES (?, ?, ?, ?)
                     ''', (url, 1, block_type, comment))
 
-    # Commit changes to the database
-    conn.commit()
+                # Commit changes to the database
+                try:
+                    conn.commit()
+                    print(f"Explicit domains (type {domain_type}) imported successfully into gravity.db!")
+                except sqlite3.DatabaseError as e:
+                    print(f"Error committing changes to the database: {e}")
 
-    # Close the connection
-    conn.close()
-
-    print(f"Explicit domains (type {domain_type}) imported successfully into gravity.db!")
+        #  After loop, regardless of results, close the connection
+        conn.close()
+        print(f"Database connection closed.")
 
 def update_gravity_in_pihole(container_name='pihole'):
     """
@@ -113,8 +124,8 @@ def update_gravity_in_pihole(container_name='pihole'):
         result = subprocess.run(command, capture_output=True, text=True, check=True)
 
         # Output the result of the command
-        print("Gravity updated successfully!")
-        print(result.stdout)
+        print(f"Gravity updated successfully!")
+        print(f"{result.stdout}")
 
     except subprocess.CalledProcessError as e:
         # Handle errors if the command fails
@@ -134,26 +145,27 @@ def main():
 
     # Reference to the text files containing the blacklists and whitelists
     blacklist_file = 'blacklist.txt'
+    whitelist_file = 'whitelist.txt'
     explicit_blacklist_file = 'explicit_blacklist.txt'
     explicit_whitelist_file = 'explicit_whitelist.txt'
-    
+
     # Insert the blacklists into the adlist table
-    print("Inserting blacklists...")
+    print(f"Inserting blacklists...")
     insert_adlist_to_db(blacklist_file, db_path, 'blacklist')
 
-    # Insert the whitelists into the adlist table
-    # print("Inserting whitelists...")
-    # insert_adlist_to_db(whitelist_file, db_path, 'whitelist')
+    #Insert the whitelists into the adlist table
+    print(f"Inserting whitelists...")
+    insert_adlist_to_db(whitelist_file, db_path, 'whitelist')
 
     # Inserting explicit domains to whitelist
-    print("Inserting explicit domain whitelists...")
+    print(f"Inserting explicit domain whitelists...")
     insert_explicit_domains_to_db(explicit_whitelist_file,db_path,'whitelist')
 
     # Inserting explicit domains to blacklist
-    print("Inserting explicit domain blacklist...")
+    print(f"Inserting explicit domain blacklist...")
     insert_explicit_domains_to_db(explicit_blacklist_file,db_path,'blacklist')
 
-    print("Updating gravity with all new lists and domains...")
+    print(f"Updating gravity with all new lists and domains...")
     update_gravity_in_pihole('pihole')
 
 if __name__ == "__main__":
