@@ -17,6 +17,8 @@
   ansible.builtin.command:
     cmd: "python3 -m venv {{ env_vars.pihole_script_dir }}/venv"
     creates: "{{ env_vars.pihole_script_dir }}/venv"
+  args:
+    chdir: "{{ env_vars.pihole_script_dir }}"
   become: true
   become_user: docker
 
@@ -30,5 +32,7 @@
 - name: Run the Pi-hole gravity update script
   ansible.builtin.command:
     cmd: "{{ env_vars.pihole_script_dir }}/venv/bin/python {{ env_vars.pihole_script_dir }}/update_lists.py"
+  args:
+    chdir: "{{ env_vars.pihole_script_dir }}"
   become: true
   become_user: docker

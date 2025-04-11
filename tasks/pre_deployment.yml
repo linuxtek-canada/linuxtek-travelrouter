@@ -28,12 +28,13 @@
       - python3-virtualenv
       - python3-venv
 
-# - name: Update Raspberry Pi firmware
-#   ansible.builtin.expect:
-#     command: rpi-update
-#     responses:
-#       "Would you like to proceed? (y/N)":
-#         - "Y"
+- name: Update Raspberry Pi Firmware
+  ansible.builtin.expect:
+    command: rpi-update
+    responses:
+      "Would you like to proceed? (y/N)":
+        - "Y"
+  when: is_raspberry_pi
 
 - name: Check if reboot is requested by system from kernel/libs updates
   ansible.builtin.stat:
@@ -68,7 +69,7 @@
       - lsb-release
       - ltunify
       - openssl
-      - openssh-server      
+      - openssh-server
       - qemu-guest-agent
       - solaar
       - sudo

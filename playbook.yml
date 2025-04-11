@@ -2,6 +2,7 @@
 - name: Install Docker, required software, and deploy containers
   hosts: all
 
+  gather_facts: true
   become: true
   become_user: root
 
@@ -16,6 +17,11 @@
       - heimdall
 
   tasks:
+
+    - name: Determine if this is a Raspberry Pi
+      ansible.builtin.set_fact:
+        is_raspberry_pi: "{{ 'Raspberry' in (ansible_product_name | default('')) }}"
+
     - name: Install pre-deployment software
       ansible.builtin.include_tasks:
         file: "tasks/pre_deployment.yml"
@@ -32,6 +38,7 @@
         file: "tasks/configure_pihole.yml"
       when: "'pihole' in container_names"
 
-    # - name: Post Deployment Tasks
-    #   ansible.builtin.include_tasks:
-    #     file: "tasks/post_deployment.yml"
+    - name: Post Deployment Tasks - GUI only
+      ansible.builtin.include_tasks:
+        file: "tasks/post_deployment.yml"
+      when: env_vars.gui_enabled

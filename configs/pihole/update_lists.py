@@ -62,7 +62,7 @@ def insert_explicit_domains_to_db(domain_file, db_path, domain_type):
     - domain_type: Type of the domain (0 for blacklist, 1 for whitelist).
     """
     # Set the type to insert
-    block_type = 0 if domain_type == 'blacklist' else 1
+    block_type = 1 if domain_type == 'blacklist' else 0
 
     # Connect to the SQLite3 database
     conn = sqlite3.connect(db_path)
