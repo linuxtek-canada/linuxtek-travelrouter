@@ -1,6 +1,5 @@
 ---
-
-# Minor post-deployment changes
+# Post-deployment changes - GUI specific
 
 - name: Add Brave Browser Repo Key
   ansible.builtin.apt_key:
