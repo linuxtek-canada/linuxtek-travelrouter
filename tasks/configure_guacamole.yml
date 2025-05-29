@@ -1,0 +1,40 @@
+---
+# Based on essential steps here: https://github.com/boschkundendienst/guacamole-docker-compose/blob/master/prepare.sh
+
+# Prepare local directories for Guacamole Install
+- name: Create Guacamole Directories
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+    owner: docker
+    group: docker
+    mode: '0755'
+  loop:
+    - {{ env_vars.guacamole_init_dir }}
+    - {{ env_vars.guacamole_data_dir }}
+    - {{ env_vars.guacamole_drive_dir }}
+
+- name: Create Guacamole Record Directory - R/W Access
+  ansible.builtin.file:
+    path: {{ env_vars.guacamole_record_dir }}
+    state: directory
+    owner: docker
+    group: docker
+    mode: '0777'
+
+# Configure PostgreSQL in preparation for running Guacamole
+# This uses the official Guacamole docker image to create a base database file
+- name: Run guacamole initdb.sh for PostgreSQL
+  community.docker.docker_container:
+    name: guac-init
+    image: guacamole/guacamole
+    command: /opt/guacamole/bin/initdb.sh --postgresql
+    auto_remove: true
+    detach: false
+    tty: false
+  register: guac_output
+
+- name: Save initdb.sql to local file
+  copy:
+    content: "{{ guac_output.container.Output }}"
+    dest: "{{ env_vars.guacamole_init_dir }}/initdb.sql"

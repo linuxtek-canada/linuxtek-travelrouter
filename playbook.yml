@@ -15,6 +15,7 @@
       - pihole
       - jellyfin
       - heimdall
+      - guacamole
 
   tasks:
 
