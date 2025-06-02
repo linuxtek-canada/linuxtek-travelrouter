@@ -9,13 +9,14 @@ users:
     lock_passwd: false
     ssh-authorized-keys:
       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQC2C58RCfGNJPy5/VAamR/uMtfINDngCv/AmGpGctvHduQAuOHOdRJSNHKi9Ets6krWW4ZJ0qsWOr7VLY2+UcyWEOUEUEUDNbiytHDclvaZhNSxLQ4CNuTKGrRkGdkY697LWgr0GdgfmojjHbWkODvBs9fQzDFJcdQIgoHQwP5bYbjGlyfB29tUEgoEgrWkuEsdpLYIV867IJJi7bqZSfOLPY+0VbiZl7oiRYjHOXUPEJbzD6JJS9okdjUO/hTvWZuenWsTjDd4ULlM/HhcctUYieNeAYm6uNJvFJvgPTBXiIBAiJhAxsmFvmCmFk2MetIHfMjMEmfm2kQ6764ktWcoxMUO0wITp57FryMOZZxlyRzh6sYC++Vlf1Qj/d+Lb18lK40xrmDjigApF3vn5obWf3QSQDP4PbPS1Ao4k3Fo+TpvgBG/68oue4ddnNvQfSQKWG+PUBZ6onzUXAZrUKgs65cO0QHvj1YC8I6MuNdq6onEkTuHvNkHnV9cUK5jeMtZ61cdJwGoP24TVn5QbYq5ORyQDAGZJ+BAIcEU1lCLFSsRqaYjASsf3nkLb1rYUCRQ9Is9epSsYFN1vRjPxSDMAMtmjKcoTQOA8cCBKG1X8rMkecTjoiRS//Mr0OE9xV7jA+CDhRYfVbNERSJjrnjJILnFYY6auYMRSZf6qIMVZQ== keitarou@FIGHTER
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCydLv285qEmkn102UbHS0qPRwykCF3fX2p2en2Hryy3htaDBLsm1+FS2IENH0qnVWu9clNyXsPoiqho7k4/pknx6SVrInzSQwyT6fb/ucrLgOxhP2XqVgzaPPanf0Q8Lr1e9DI2k6rwHK86rvFOco81OnSbUYEq0MJXoB/6T0yHnEuL/lFoTO/B9RpV/FWwU3JOg3438MxyB/7VERw4jBEEIN7FSnXxVBXNWj8t9Iq1ol4LErYOztwkWQmxzwuEEKCNi/Hkq/BmjFQ/PD6E8CxiT7K6v0EuBaa0Wemq57PqfMAmb1vcf8lwTbM0sZK9AlZx9bmBV35Fr4wYV0Wx38Mot9ExW73raZMcz+TECz8x3vjCE5+zhTjhcdRu6wAY+vGqoBCRfubhVTBfCJit78ImZm1ni8wr6QC5fwLhMZB2WmKVHRpIU0dNSn/CJpod98bDnDCNGODVmJbjO0iQV7XwGJL9BO8fViVAKooLsnqJgCCpR94IKHvEyamjLhw7fM= keitarou@KEITAROU-TP
 
 # If this is set, 'root' will not be able to ssh in and they 
 # will get a message to login instead as the above $user (debian)
 disable_root: true
 
-# Disable password auth - force to use authorized key
-ssh_pwauth: false
+# Allow SSH password auth as fallback.  Set to false to disable. 
+ssh_pwauth: true
 
 # Update apt database on first boot (run 'apt-get update')
 package_update: true

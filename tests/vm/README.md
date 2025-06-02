@@ -12,20 +12,23 @@ This will not be exactly the same as a proper Raspberry Pi OS - it will not have
 
 ```
 sudo apt update
-sudo apt-get -y install \
-    qemu-kvm \
-    libvirt-daemon-system \
-    libvirt-clients \
-    cloud-init \
-    bridge-utils \
-    virt-manager \
-    guestfs-tools \
-    qemu-system-arm \
-    qemu-efi-aarch64 \
-    ovmf \ 
-    cloud-utils \
-    binfmt-support \
-    qemu-user-static
+
+sudo apt -y install \
+  qemu-kvm \
+  cloud-utils 
+
+sudo apt -y install \
+  libvirt-daemon-system \
+  libvirt-clients \
+  cloud-init \
+  bridge-utils \
+  virt-manager \
+  guestfs-tools \
+  qemu-system-arm \
+  qemu-efi-aarch64 \
+  ovmf \
+  binfmt-support \
+  qemu-user-static
 ```
 
 2. Create the proper users and services.
@@ -40,15 +43,20 @@ Note: If you need to reload for current session, run `exec su -l $USER` to ensur
 3.  Ensure the qemu and images folders are permissioned for the created users/groups:
 
 ```
-sudo chmod -R libvirt-qemu:kvm /var/lib/libvirt/images
-sudo chmod -R libvirt-qemu:kvm /var/lib/libvirt/qemu
+sudo chown -R libvirt-qemu:kvm /var/lib/libvirt/images
+sudo chown -R libvirt-qemu:kvm /var/lib/libvirt/qemu
+sudo chmod -R 775 /var/lib/libvirt/images
+sudo chmod -R 775 /var/lib/libvirt/qemu
 ```
 
 This will allow you to manage all of the files as a regular user which is a member of these groups.
- 
+
+Note:  You may need to reboot or log-in again to ensure the group permissions have taken effect.  
+A good way to test is to confirm you can write to to the directory successfully by running: `touch /var/lib/libvirt/images/test.img`
+
 4. Start and Persist libvirt service:
 
-`sudo systemctl enable --now libvirtd `
+`sudo systemctl enable --now libvirtd`
 
 5. Check that KVM support is enabled
 
@@ -112,7 +120,7 @@ genisoimage -output debian12-cloud-init.iso -volid cidata -joliet -rock cloud-in
 cp debian12-cloud-init.iso /var/lib/libvirt/images
 ```
 
-**Note:**  The hashed SHA-512 password is "debian", created via `mkpasswd --method=SHA-512 --rounds=4096 --salt=MCEqDm9nbk9Mk5Zl`.
+**Note:**  TThe created user is "sysadmin" and the hashed SHA-512 password is "sysadmin", created via `mkpasswd --method=SHA-512 --rounds=4096 --salt=MCEqDm9nbk9Mk5Zl`.
 
 `Value: $6$rounds=4096$MCEqDm9nbk9Mk5Zl$pIA0130Pwhbhx2NmYJJ30TRi5o/weADIEAytk.2NsS454klh.Uy4Voa9XO8.9W1MA0uX3FrfPaQCbnfhQpCFd0`
 
@@ -124,7 +132,7 @@ virt-install \
   --os-variant debian12 \
   --arch aarch64 \
   --machine virt \
-  --cpu cortex-a76 \
+  --cpu cortex-a72 \
   --memory 16384 \
   --vcpus 4 \
   --disk path=/var/lib/libvirt/images/debian-12-generic-arm64.qcow2,format=qcow2,bus=virtio \

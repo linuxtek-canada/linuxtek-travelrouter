@@ -71,10 +71,12 @@
       - openssl
       - openssh-server
       - qemu-guest-agent
-      - realvnc-vnc-server
       - sqlite3
       - solaar
       - sudo
+      - tigervnc-standalone-server
+      - tigervnc-xorg-extension
+      - tigervnc-common
     state: present
     update_cache: true
 
@@ -82,19 +84,22 @@
   command: raspi-config nonint do_vnc 0
   register: vnc_enable_output
   changed_when: "'already' not in vnc_enable_output.stdout"
-
+  when: is_raspberry_pi
+  
 - name: Enable VNC service
   systemd:
     name: vncserver-x11-serviced
     enabled: yes
     state: started
-
+  when: is_raspberry_pi
+  
 - name: Ensure VNC server is running
   shell: systemctl is-active vncserver-x11-serviced
   register: vnc_status
   changed_when: false
   failed_when: vnc_status.stdout != "active"
-
+  when: is_raspberry_pi
+  
 - name: Add Docker GPG Apt key
   ansible.builtin.apt_key:
     url: https://download.docker.com/linux/debian/gpg
