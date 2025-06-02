@@ -39,6 +39,11 @@
         file: "tasks/configure_pihole.yml"
       when: "'pihole' in container_names"
 
+    - name: Configure Heimdall if it was installed
+      ansible.builtin.include_tasks:
+        file: "tasks/configure_heimdall.yml"
+      when: "'heimdall' in container_names"
+
     - name: Post Deployment Tasks - GUI only
       ansible.builtin.include_tasks:
         file: "tasks/post_deployment.yml"

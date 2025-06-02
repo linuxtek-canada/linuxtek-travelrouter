@@ -54,7 +54,7 @@ def insert_adlist_to_db(domain_file, db_path, domain_type):
 
                 except sqlite3.DatabaseError as e:
                     print(f"Error committing changes to the database: {e}")
-                
+
         #  After loop, regardless of results, close the connection
         conn.close()
         print(f"Database connection closed.")
@@ -142,7 +142,6 @@ def main():
 
     # Path to the SQLite database (change it to your Pi-Hole gravity.db path if necessary)
     db_path = '/opt/docker/pihole/etc-pihole/gravity.db'
-
     # Reference to the text files containing the blacklists and whitelists
     blacklist_file = 'blacklist.txt'
     whitelist_file = 'whitelist.txt'

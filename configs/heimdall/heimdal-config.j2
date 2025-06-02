@@ -8,28 +8,28 @@
   "apps": [
     {
       "title": "Jellyfin",
-      "url": "https://localhost:{{ jellyfin_https_port }}",
+      "url": "https://localhost:{{ env_vars.jellyfin_https_port }}",
       "icon": "http://localhost:8000/jellyfin.png",
       "type": "default",
       "tag": "Media"
     },
     {
       "title": "Pi-Hole",
-      "url": "https://localhost:{{ pihole_https_port }}/admin",
+      "url": "https://localhost:{{ env_vars.pihole_https_port }}/admin",
       "icon": "http://localhost:8000/pihole.png",
       "type": "default",
       "tag": "Network"
     },
     {
       "title": "RaspAP",
-      "url": "https://localhost:{{ raspap_webgui_port }}",
+      "url": "https://localhost:{{ env_vars.raspap_webgui_port }}",
       "icon": "http://localhost:8000/raspap.png",
       "type": "default",
       "tag": "Network"
     }
     {
       "title": "Portainer",
-      "url": "https://localhost:{{ portainer_webgui_port }}",
+      "url": "https://localhost:{{ env_vars.portainer_webgui_port }}",
       "icon": "http://localhost:8000/images/portainer.png",
       "type": "default",
       "tag": "Network"

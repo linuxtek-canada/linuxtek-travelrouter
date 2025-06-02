@@ -74,9 +74,7 @@
       - sqlite3
       - solaar
       - sudo
-      - tigervnc-standalone-server
-      - tigervnc-xorg-extension
-      - tigervnc-common
+      - wayvnc      
     state: present
     update_cache: true
 

@@ -16,8 +16,8 @@
 - name: Edit the pihole script to ensure the gravity.db location is correct.
   ansible.builtin.lineinfile:
     path: "{{ env_vars.pihole_script_dir }}/update_lists.py"
-    search_string: 'db_path ='
-    line: 'db_path = "{{ env_vars.pihole_etc_dir }}/gravity.db"'
+    search_string: '    db_path ='
+    line: '    db_path = "{{ env_vars.pihole_etc_dir }}/gravity.db"'
 
 - name: Create a virtual environment for Python in the scripts directory
   ansible.builtin.command:

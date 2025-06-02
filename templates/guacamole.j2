@@ -8,7 +8,8 @@ networks:
 services:
   guacd:
     container_name: guacd_compose
-    image: guacamole/guacd
+    image: guacamole/guacd:1.6.0-RC1
+    platform: linux/arm64
     networks:
       - guacnetwork_compose
     restart: always
@@ -23,7 +24,8 @@ services:
       POSTGRES_DB: guacamole_db
       POSTGRES_PASSWORD: {{ env_vars.guacamole_postgres_password }}
       POSTGRES_USER: guacamole_user
-    image: postgres:15.2-alpine
+    image: postgres:15.13-alpine3.22
+    platform: linux/arm64/v8
     networks:
       - guacnetwork_compose
     restart: always
@@ -45,7 +47,8 @@ services:
       POSTGRES_PASSWORD: {{ env_vars.guacamole_postgres_password }}
       POSTGRES_USER: guacamole_user
       RECORDING_SEARCH_PATH: /record
-    image: guacamole/guacamole
+    image: guacamole/guacamole:1.6.0-RC1
+    platform: linux/arm64
     networks:
       - guacnetwork_compose
     volumes:

@@ -1,0 +1,18 @@
+---
+
+- name: Create Heimdall Config Directory
+  ansible.builtin.file:
+    path: {{ env_vars.heimdall_config_dir }}
+    state: directory
+    owner: docker
+    group: docker
+    mode: '0755'
+
+- name: Copy Launcher Icons and JSON Files
+  ansible.builtin.copy:
+    src: ./www
+    dest: "{{ env_vars.heimdall_config_dir/www }}"
+    state: directory
+    owner: docker
+    group: docker
+    mode: '0755'    
