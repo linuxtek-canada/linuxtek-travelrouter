@@ -6,9 +6,11 @@ services:
     image: ghcr.io/raspap/raspap-docker:latest
     platform: linux/arm64
     restart: unless-stopped
-    user: "{{ env_vars.docker_uid }}:{{ env_vars.docker_gid }}"
+    # user: "{{ env_vars.docker_uid }}:{{ env_vars.docker_gid }}"
     labels:
       io.portainer.accesscontrol.public: "true"
+    ports:
+      - "{{ env_vars.raspap_webgui_port }}:8081"   
     environment:
       - RASPAP_SSID={{ env_vars.raspap_ssid }}
       - RASPAP_SSID_PASS={{ env_vars.raspap_ssid_pass }}
